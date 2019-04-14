@@ -1,50 +1,49 @@
 const fs = require('fs');
-const colors = require('colors').argv;
 
-const crearArchivo = (base, limite) => {
+let listarTabla = (base, limite) => {
 
     return new Promise((resolve, reject) => {
 
         if (!Number(base)) {
-            reject(`${ base } no es un número`);
+            reject(`La base introducida ${base} no es un número`);
+            return;
+        }
+
+        if (!Number(limite)) {
+            reject(`El límite introducido ${limite} no es un número`);
             return;
         }
 
         let mensaje = '';
         for (let i = 1; i <= limite; i++) {
-            mensaje = mensaje + `${ base } * ${ i } = ${ base * i} \n`;
-        };
-        fs.writeFile(`./bases/multi-${ base }.txt`, mensaje, (err) => {
-            if (err)
-                reject(err);
-            else
-                resolve(`./bases/multi-${ base }.txt`);
-
-        });
+            let linea = `${base} * ${i} = ${base*i}\n`;
+            mensaje += linea;
+        }
+        resolve(mensaje);
     });
-
 }
 
-
-const listarTabla = (base, limite) => {
+let crearArchivo = (base) => {
 
     return new Promise((resolve, reject) => {
 
         if (!Number(base)) {
-            reject(`${ base } no es un número`);
+            reject(`El valor introducido ${base} no es un número`);
             return;
         }
-        console.log('============================================'.green);
-        console.log(`====== tabla del ${ base } con límite ${ limite } =====`.green);
-        console.log('============================================'.green);
+
         let mensaje = '';
-        for (let i = 1; i <= limite; i++) {
-            mensaje = mensaje + `${ base } * ${ i } = ${ base * i} \n`;
-        };
-        resolve(mensaje);
+        for (let i = 1; i <= 10; i++) {
+            let linea = `${base} * ${i} = ${base*i}\n`;
+            mensaje += linea;
+        }
 
-    });
+        fs.writeFile(`./bases/tabla-${base}.txt`, mensaje, (err) => {
+            if (err) reject(err);
+            else resolve(`tabla-${base}.txt`);
+        });
 
+    })
 }
 
 module.exports = {

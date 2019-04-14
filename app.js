@@ -1,26 +1,27 @@
-// Ambas funcionan igual, en la 2 da estoy usando desustructuración de objetos
-//const crearArchivo = require('./multiplicar/multiplicar').crearArchivo;
+var colors = require('colors');
+const { argv } = require('./config/yargs');
+
 const { crearArchivo, listarTabla } = require('./multiplicar/multiplicar');
-const argv = require('./config/yargs').argv;
-const colors = require('colors').argv;
 
+let { base, limite } = argv;
+let comando = argv._[0];
 
-// let argv = process.argv;
-// console.log(argv);
-let base = argv.base;
-let limite = argv.limite;
-
-switch (argv._[0]) {
+switch (comando) {
     case 'listar':
+        console.log('====================='.green);
+        console.log(`==tabla del ${base} al ${limite}==`.green);
+        console.log('====================='.green);
+
         listarTabla(base, limite)
-            .then((tabla) => console.log(tabla.red))
-            .catch((err) => { console.log(err); });
+            .then((mensaje) => console.log(mensaje))
+            .catch((e) => console.log(e))
         break;
     case 'crear':
-        crearArchivo(base, limite)
-            .then((archivo) => { console.log(`El archivo ${ archivo } fue creado con éxito!!!`.green); })
-            .catch((err) => { console.log(err); });
+        crearArchivo(base)
+            .then((archivo) => console.log(`El archivo ${archivo} ha sido creado!!`.rainbow.inverse))
+            .catch((e) => console.log(e));
         break;
     default:
         console.log('Comando no reconocido');
+        break;
 }
